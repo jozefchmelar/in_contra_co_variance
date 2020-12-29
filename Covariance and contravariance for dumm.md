@@ -1,4 +1,9 @@
 # Covariance and contravariance by example.
+
+
+![covariance contravariance](assets/header.png)
+
+
 Covariance and contravariance are very spooky words.
 
 I use these words if want to sound very smart - and it usually works. No one really knows what the hell it is. 
