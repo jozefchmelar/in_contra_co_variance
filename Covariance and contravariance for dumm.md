@@ -39,6 +39,7 @@ IEnumerable<Person> people = new List<Employee> // It's not <Employee> anymore.
 So if a `Employee` is also a `Person` I can use a more generic type on the left side of the assignment. AKA Covariance!
 
 Simple right?
+
 ![told you](assets/toldya.gif)
 
 Since I mentioned a *generic type* let's make something where we can make a use of generics. Let's save the data in a database.
@@ -67,7 +68,9 @@ You have multiple options here
     4. Some other idea.
 
 You're in charge, not a database or a hash function so I'm going with the option #3.
+
 ![you are the king](assets/king.gif)
+
 I want all my persistent objects to implement an `Entity` interface. 
 
 ```csharp
@@ -117,6 +120,8 @@ Suddenly you get an error
 ```
 cannot convert from 'FileRepository<Employee>' to 'IRepository<Person>'csharp(CS1503)
 ```
+
+
 ![but why meme](assets/but-why.gif)
 But why? It works on the example above!
 
