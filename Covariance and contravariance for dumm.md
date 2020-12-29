@@ -123,6 +123,8 @@ cannot convert from 'FileRepository<Employee>' to 'IRepository<Person>'csharp(CS
 
 
 ![but why meme](assets/but-why.gif)
+
+
 But why? It works on the example above!
 
 To quote myself  "So if a `Employee` is also a `Person` I can use a more abstract type on the left side of the assignment. AKA Covariance!
