@@ -6,24 +6,24 @@
 
 Covariance and contravariance are very spooky words.
 
-I use these words if want to sound very smart - and it usually works. No one really knows what the hell it is. 
+I use these words if I want to sound very smart - and it usually works. No one really knows what the hell it is. 
 
-As I want to explain this topic as simple as possible (but not simpler) I'll try to avoid these smart sounding words.
+As I want to explain this topic as simple as possible (but not simpler) I'll try to avoid these smart-sounding words.
 
-I'm going to implement a Repository pattern with use of generics to explain this topic. 
+I'm going to implement a Repository pattern with the use of generics to explain this topic. 
 
 I'll use C# for my examples, it's pretty similar in languages like Java or Kotlin. 
 
 ## You already know half of it!
 
-Let's define few simple classes. 
+Let's define a few simple classes. 
 
 ```csharp
 record Person(string Name);
 record Employee(string Name) : Person(Name);
 record RemoteEmployee(string Name, string location) : Employee(Name);
 ```
-Create few employees and put them inside a collection.
+Create a few employees and put them inside a collection.
 
 ```csharp
 IEnumerable<Employee> people = new List<Employee>
@@ -41,13 +41,13 @@ IEnumerable<Person> people = new List<Employee> // It's not <Employee> anymore.
 };
 ```
 
-So if a `Employee` is also a `Person` I can use a more generic type on the left side of the assignment. AKA Covariance!
+So if an `Employee` is also a `Person` I can use a more generic type on the left side of the assignment. AKA Covariance!
 
 Simple right?
 
 ![told you](assets/toldya.gif)
 
-Since I mentioned a *generic type* let's make something where we can make a use of generics. Let's save the data in a database.
+Since I mentioned a *generic type* let's make something where we can make  use of generics. Let's save the data in a database.
 
 Should I use MySQL, Excel, SQL Server, SQLite or Postgres? The answer is - we shouldn't have to care. All I want to do is insert some data and get it back later. Here a repository pattern comes to rescue!  
 
@@ -67,8 +67,8 @@ How to insert the data in such a way that I can retrieve it later?
 There's an `id` in the `Get` method but under what `id` would you Insert the data?
 
 You have multiple options here 
-    1. Let a database handle it - The database could generate some Guid (like Mongo) or a relational database could generate primary key.
-    2. Use a hash code or a to string of an object - But you may never get the object back, so never do that.
+    1. Let a database handle it - The database could generate some Guid (like Mongo) or a relational database could generate a primary key.
+    2. Use a hash code or a ToString of an object - But you may never get the object back, so never do that.
     3. Enforce an Id before it is added to a database.
     4. Some other idea.
 
@@ -132,7 +132,7 @@ cannot convert from 'FileRepository<Employee>' to 'IRepository<Person>'csharp(CS
 
 But why? It works on the example above!
 
-To quote myself  "So if a `Employee` is also a `Person` I can use a more abstract type on the left side of the assignment. AKA Covariance!
+To quote me  "So if an `Employee` is also a `Person` I can use a more abstract type on the left side of the assignment. AKA Covariance!
 
 What's the difference? Well if you take a look on the IEnumerable (or Collection in Java) interface it's defined like [this.](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1?view=net-5.0)
 
@@ -140,7 +140,7 @@ What's the difference? Well if you take a look on the IEnumerable (or Collection
 public interface IEnumerable<out T> : System.Collections.IEnumerable
 ```
 
-The `out` keyword is crucial here. It says to the compiler - use the type `T`or a more abstract/derived type. The type `T` is a *covariant* parameter. It allows some change, a variance.
+The `out` keyword is crucial here. It says to the compiler - use the type `T` or a more abstract/derived type. The type `T` is a *covariant* parameter. It allows some change, a variance.
 Similar in Java you'd write `Collection<? extends T>` 
 
 But why the `out` keyword? Why not `in` or `covariant` or `leave me alone and work plz`?
@@ -154,7 +154,7 @@ Invalid variance: The type parameter 'T' must be contravariantly valid on 'IRepo
 
 Whaaat?  
 
-Well. When you specify the `out` keyword it means that the interface can only **OUTPUT** the the type `T`. It cannot take an input of type `T`, like it does in the Insert method. 
+Well. When you specify the `out` keyword it means that the interface can only **OUTPUT** the  type `T`. It cannot take an input of type `T`, like it does in the Insert method. 
 
 I'll remove the `Insert` method from the `IRepository` interface and move it to `IWriteOnlyRepository`. To have some symmetry in the codebase I'll introduce an `IReadOnlyRepository` and merge them in the `IRepository`.
 
@@ -210,7 +210,7 @@ static void AddRemoteEmployees(IRepository<RemoteEmployee> repository)
 Unfortunately you'll get this error 
 `cannot convert from 'FileRepository<Employee>' to 'IRepository<RemoteEmployee>'`. 
 
-The `FileRepository` implements the interface `IRepository<Employee>` so only an Employee can be added into the repository. You can say that is very rigid. It wont allow any variance, therefore it is **Invariant**.
+The `FileRepository` implements the interface `IRepository<Employee>` so only an Employee can be added into the repository. You can say that is very rigid. It won't allow any variance, therefore it is **Invariant**.
 
 The `IWriteOnlyRepository` has currently the same problem as `IRepository` it does not allow any variance. Since we have an `out` modifier on the `IReadOnlyRepository`, don't we have an `in` modifier we can use? 
 
@@ -225,7 +225,7 @@ interface IWriteOnlyRepository<in T>
 }
 ```
 
-Last thing to do is to change the interface in the method. Since `IRepository` doesn't allow any variance, we have to use a more flexible interface which is the `IWriteOnlyRepository`.  `RemoteEmployee` is more specific than `Employee`, but since our `IWriteOnlyRepository` is marked with an `out` keyword it doesn't mind more specific types. AKA contravariance.
+The last thing to do is to change the interface in the method. Since `IRepository` doesn't allow any variance, we have to use a more flexible interface which is the `IWriteOnlyRepository`.  `RemoteEmployee` is more specific than `Employee`, but since our `IWriteOnlyRepository` is marked with an `out` keyword it doesn't mind more specific types. AKA contravariance.
 
 ```csharp
 static void AddRemoteEmployees(IWriteOnlyRepository<RemoteEmployee> repository) => new List<RemoteEmployee>
@@ -240,11 +240,11 @@ It works!
 
 ## Summary
 
-When your interface allows you to use a single type, it's offers no flexibility, no variance, therefore it's *invariant*.
+When your interface allows you to use a single type, it offers no flexibility, no variance, therefore it's *invariant*.
 
 If you go through a list of employees and you want to treat them as `Person`, thanks to covariance you can.
 
-If tou want to add a manager to a list of employees, you can treat the list of employees as if it was a list of managers, because you're only appending to the list and employee list should be able to handle a manager.
+If you want to add a manager to a list of employees, you can treat the list of employees as if it was a list of managers, because you're only appending to the list and employee list should be able to handle a manager.
 
 
 I hope I made this weird topic a bit more clear! 
