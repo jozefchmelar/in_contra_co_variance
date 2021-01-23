@@ -227,7 +227,7 @@ interface IWriteOnlyRepository<in T>
 }
 ```
 
-The last thing to do is to change the interface in the method. Since `IRepository` doesn't allow any variance, we have to use a more flexible interface which is the `IWriteOnlyRepository`.  `RemoteEmployee` is more specific than `Employee`, but since our `IWriteOnlyRepository` is marked with an `out` keyword it doesn't mind more specific types. AKA contravariance.
+The last thing to do is to change the interface in the method. Since `IRepository` doesn't allow any variance, we have to use a more flexible interface which is the `IWriteOnlyRepository`.  `RemoteEmployee` is more specific than `Employee`, but since our `IWriteOnlyRepository` is marked with an `in` keyword it doesn't mind more specific types. AKA contravariance.
 
 ```csharp
 static void AddRemoteEmployees(IWriteOnlyRepository<RemoteEmployee> repository) => new List<RemoteEmployee>
