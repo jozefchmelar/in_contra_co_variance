@@ -12,7 +12,8 @@ As I want to explain this topic as simple as possible (but not simpler) I'll try
 
 I'm going to implement a Repository pattern with the use of generics to explain this topic. 
 
-I'll use C# for my examples, it's pretty similar in languages like Java or Kotlin. 
+I'll use C# for my examples, it's pretty similar in languages like Java or Kotlin.  
+
 
 ## You already know half of it!
 
@@ -48,6 +49,9 @@ Simple right?
 ![told you](assets/toldya.gif)
 
 Since I mentioned a *generic type* let's make something where we can make  use of generics. Let's save the data in a database.
+
+| Fun fact : Generics were introduced in C# 2.0, released in 2005, along with Visual Studio 200.
+
 
 Should I use MySQL, Excel, SQL Server, SQLite or Postgres? The answer is - we shouldn't have to care. All I want to do is insert some data and get it back later. Here a repository pattern comes to rescue!  
 
