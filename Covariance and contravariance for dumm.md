@@ -141,7 +141,6 @@ public interface IEnumerable<out T> : System.Collections.IEnumerable
 ```
 
 The `out` keyword is crucial here. It says to the compiler - use the type `T` or a more abstract/derived type. The type `T` is a *covariant* parameter. It allows some change, a variance.
-Similar in Java you'd write `Collection<? extends T>` 
 
 But why the `out` keyword? Why not `in` or `covariant` or `leave me alone and work plz`?
 
@@ -216,7 +215,6 @@ The `IWriteOnlyRepository` has currently the same problem as `IRepository` it do
 
 Yes, we do! When you specify the `in` keyword it means that the interface can only accept an **INPUT** of the type `T`.  Since we are only using the type `T` as an input and we never return in we can mark the input type as contravariant using the `in` keyword.
 
-Similar in Java you'd write `List<? super T>` 
 
 ```csharp
 interface IWriteOnlyRepository<in T>
@@ -240,15 +238,11 @@ It works!
 
 ## Summary
 
-When your interface allows you to use a single type, it offers no flexibility, no variance, therefore it's *invariant*.
+When your interface allows you to use a single type, it offers no flexibility, no variance, therefore it's **invariant**.
 
-If you go through a list of employees and you want to treat them as `Person`, thanks to covariance you can.
+You can go through a list of employees and treat them as `Person`\`s, because they have a **co**mmon trait - ***co**variance*
 
-If you want to add a manager to a list of employees, you can treat the list of employees as if it was a list of managers, because you're only appending to the list and employee list should be able to handle a manager.
 
+You can't treat the list of employees as a list of managers, but you should be able to add a manager to a list of employees. This way you're approaching the problem from the opposite (contra) side - **contravariance**
 
 I hope I made this weird topic a bit more clear! 
-
-
-
-
